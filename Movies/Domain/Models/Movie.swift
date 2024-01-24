@@ -4,12 +4,16 @@
 
 import Foundation
 
-public struct Movie: Codable, Hashable {
+public struct Movie: Codable, Hashable, Identifiable {
     public let title: String
     public let year: String
     public let imdbID: String
     public let type: String
     public let poster: URL
+    
+    public var id: String {
+            return imdbID
+        }
     
     public init(title: String, year: String, imdbID: String, type: String, poster: URL) {
         self.title = title
