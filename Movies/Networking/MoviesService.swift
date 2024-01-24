@@ -33,9 +33,7 @@ struct MoviesService: MoviesLoader {
             return movies
         }
     }
-    
 }
-
 
 extension JSONDecoder.KeyDecodingStrategy {
     static var convertFromPascalCase: JSONDecoder.KeyDecodingStrategy {
