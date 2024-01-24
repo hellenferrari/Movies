@@ -7,7 +7,7 @@
 
 ## What was used/done
 - Time spent: ~7 hours. - split in 3 and 4 hours
-- Used MVVM design pattern
+- MVVM design pattern
 - SwiftUI for the UI layer, but the code is adaptable for UIKit.
 - Designed a high-level structure of the system.
 - Separated the code to make it more scalable, flexible and testable.
@@ -16,6 +16,9 @@
 
 ## System Design
 - The App initializes the UI, the viewModel, and the type of httpClient for networking requests, in this scenario URLSession, the base URL.
+![image](https://github.com/hellenferrari/Movies/assets/5003904/77ee98b5-50bf-4811-9275-5efb90d4c540)
 
 ## Movies App
+![movies](https://github.com/hellenferrari/Movies/assets/5003904/c6fc4651-398a-4ec0-b65b-0cd30c453f95)
+
 
