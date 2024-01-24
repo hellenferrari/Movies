@@ -8,8 +8,12 @@ enum HandlerError: Error {
     case invalidError
 }
 
-struct URLSessionHTTPClient: HTTPClient {
+class URLSessionHTTPClient: HTTPClient {
     let session: URLSession
+    
+    init(session: URLSession) {
+        self.session = session
+    }
     
     func get(url: URL) async throws -> Result<Data, Error> {
         do {

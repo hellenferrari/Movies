@@ -21,29 +21,38 @@ struct MoviesListView: View {
                     }
                 }
             Spacer()
-            ScrollView(.horizontal) {
-                HStack{
-                    ForEach(viewModel.movies, id: \.id) { movie in
-                        VStack {
-                            AsyncImage(url: movie.poster)
+            
+            switch viewModel.loadingState {
+            case .loading:
+                ProgressView()
+            case .empty:
+                Text("No data to display")
+            case .failed:
+                Text("Failed to load movies")
+            case .loaded:
+                ScrollView(.horizontal) {
+                    HStack{
+                        ForEach(viewModel.movies, id: \.id) { movie in
                             VStack {
-                                Text(movie.title)
-                                Text(movie.year)
-                                Button {
-                                    // TODO:
-                                } label: {
-                                    Text("Learn More")
+                                ImageView(url: movie.poster)
+                                VStack {
+                                    Text(movie.title)
+                                    Text(movie.year)
+                                    Button {
+                                        // TODO:
+                                    } label: {
+                                        Text("Learn More")
+                                    }
+                                    .buttonStyle(.bordered)
+                                    .tint(.blue)
                                 }
-                                .buttonStyle(.bordered)
-                                .tint(.blue)
                             }
                         }
-                        
                     }
                 }
+                .navigationTitle("Movies")
+                .navigationBarTitleDisplayMode(.inline)
             }
-            .navigationTitle("Movies")
-            .navigationBarTitleDisplayMode(.inline)
             Spacer()
         }
     }
