@@ -8,32 +8,45 @@ struct MoviesListView: View {
     @ObservedObject var viewModel: MoviesViewModel
     
     var body: some View {
-        VStack {
-            ScrollView(.vertical) {
-                ForEach(viewModel.movies, id: \.self) { movie in
-                    Text(movie.title)
+        NavigationStack {
+            TextField("Search for movies", text: $viewModel.searchText)
+                .padding(10)
+                .background(Color(.systemGray6))
+                .cornerRadius(8)
+                .padding([.leading, .trailing], 8)
+                .textFieldStyle(PlainTextFieldStyle())
+                .onChange(of: viewModel.searchText) { newText in
+                    Task {
+                        await viewModel.fetchMovies(with: newText)
+                    }
+                }
+            Spacer()
+            ScrollView(.horizontal) {
+                HStack{
+                    ForEach(viewModel.movies, id: \.id) { movie in
+                        VStack {
+                            AsyncImage(url: movie.poster)
+                            VStack {
+                                Text(movie.title)
+                                Text(movie.year)
+                                Button {
+                                    // TODO:
+                                } label: {
+                                    Text("Learn More")
+                                }
+                                .buttonStyle(.bordered)
+                                .tint(.blue)
+                            }
+                        }
+                        
+                    }
                 }
             }
+            .navigationTitle("Movies")
+            .navigationBarTitleDisplayMode(.inline)
+            Spacer()
         }
-        .onAppear {
-            Task { @MainActor in
-                await loadMovies()
-            }
-        }
-    }
-    
-    func loadMovies() async {
-        await viewModel.fetchMovies(content: "Tita")
     }
 }
 
-struct MoviesListView_Previews: PreviewProvider {
-    static var previews: some View {
-        let session = URLSession.shared
-        let httpClient = URLSessionHTTPClient(session: session)
-        let url = "https://www.omdbapi.com/?s=Tita&apikey=672578c6"
-        let moviesService = MoviesService(httpClient: httpClient, baseUrl: url)
-        MoviesListView(viewModel: MoviesViewModel(service: moviesService))
-    }
-}
 
