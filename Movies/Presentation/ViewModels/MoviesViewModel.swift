@@ -6,13 +6,13 @@ import Foundation
 import Combine
 
 class MoviesViewModel: ObservableObject {
-    private let service: MoviesService
+    private let service: MovieService
     private var cancellables: Set<AnyCancellable> = []
     @Published var searchText = ""
     @Published var movies = [Movie]()
     @Published var loadingState = LoadingState.loading
     
-    init(service: MoviesService) {
+    init(service: MovieService) {
         self.service = service
         
         $searchText
@@ -34,9 +34,13 @@ class MoviesViewModel: ObservableObject {
     @MainActor
     func fetchMovies(with content: String) async {
         do {
+            loadingState = .empty
+            
             let originalString = content
             let stringWithPercent = originalString.replacingOccurrences(of: " ", with: "%20")
             movies = try await service.getMovies(stringWithPercent)
+            
+            loadingState = .loaded
         } catch {
             loadingState = .failed
         }
