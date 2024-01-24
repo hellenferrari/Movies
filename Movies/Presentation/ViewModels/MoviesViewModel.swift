@@ -6,11 +6,11 @@ import Foundation
 import Combine
 
 class MoviesViewModel: ObservableObject {
-    let service: MoviesService
+    private let service: MoviesService
+    private var cancellables: Set<AnyCancellable> = []
     @Published var searchText = ""
     @Published var movies = [Movie]()
     @Published var loadingState = LoadingState.loading
-    private var cancellables: Set<AnyCancellable> = []
     
     init(service: MoviesService) {
         self.service = service
